@@ -16,3 +16,19 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+buildscript {
+    ext.koltin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle-api:8.5.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$koltin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
+
+    }
+}

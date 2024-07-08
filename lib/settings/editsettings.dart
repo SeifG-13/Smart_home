@@ -2,7 +2,6 @@ import 'package:smart_home/settings/widgets/edit_item.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:flutter/services.dart';
-import 'package:email_validator/email_validator.dart';
 
 
 

@@ -5,7 +5,6 @@ import 'package:smart_home/settings/widgets/setting_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../core/app/app.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
