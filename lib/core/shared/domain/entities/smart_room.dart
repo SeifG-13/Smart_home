@@ -1,3 +1,5 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_home/core/shared/domain/entities/smart_device.dart';
 
 import 'music_info.dart';
@@ -49,19 +51,20 @@ class SmartRoom {
       );
 
   static List<SmartRoom> fakeValues = [
-    _room,
+   /* _room,
     _room.copyWith(id: '2', name: 'DINING ROOM', imageUrl: _imagesUrls[2]),
     _room.copyWith(id: '3', name: 'KITCHEN', imageUrl: _imagesUrls[3]),
     _room.copyWith(id: '4', name: 'BEDROOM', imageUrl: _imagesUrls[4]),
-    _room.copyWith(id: '5', name: 'BATHROOM', imageUrl: _imagesUrls[1]),
+    _room.copyWith(id: '5', name: 'BATHROOM', imageUrl: _imagesUrls[1]),*/
   ];
 }
 
-final _room = SmartRoom(
+
+/*final _room = SmartRoom(
   id: '1',
   name: 'LIVING ROOM',
   imageUrl: _imagesUrls[0],
-  temperature: 25,
+  temperature: 27 ,
   airHumidity: 15,
   lights: SmartDevice(isOn: true, value: 40),
   timer: SmartDevice(isOn: false, value: 20),
@@ -78,4 +81,4 @@ const _imagesUrls = [
   'assets/images/2.jpeg',
   'assets/images/3.jpeg',
   'assets/images/4.jpeg',
-];
+];*/

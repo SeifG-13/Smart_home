@@ -11,7 +11,8 @@ import 'package:smart_home/Utilities/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+  );
   runApp(MyApp());
 }
 
@@ -26,8 +27,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
         //  primarySwatch: Colors.red,
       ),
-      initialRoute:
-          FirebaseAuth.instance.currentUser == null ? '/' : '/homeScreen',
+      initialRoute: (FirebaseAuth.instance.currentUser != null &&
+              FirebaseAuth.instance.currentUser!.emailVerified)
+          ? '/homeScreen'
+          : '/',
       routes: {
         MyRoutes.homeScreen: (context) => SmartHomeApp(),
         MyRoutes.loginScreen: (context) => LoginScreen(),

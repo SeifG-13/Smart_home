@@ -35,21 +35,13 @@ class RoomCard extends StatelessWidget {
       builder: (_, value, __) => Stack(
         fit: StackFit.expand,
         children: [
-          // -----------------------------------------------
-          // Background information card
-          // -----------------------------------------------
           Transform.scale(
             scale: lerpDouble(.85, 1.2, value),
-            // scale: 0.85,
-
             child: Padding(
               padding: const EdgeInsets.only(bottom: 180),
               child: BackgroundRoomCard(room: room, translation: value),
             ),
           ),
-          // -----------------------------------------------
-          // Room image card with parallax effect
-          // -----------------------------------------------
           Padding(
             padding: const EdgeInsets.only(bottom: 200),
             child: Transform(
@@ -62,9 +54,6 @@ class RoomCard extends StatelessWidget {
                 },
                 child: Hero(
                   tag: room.id,
-                  // -----------------------------------------------
-                  // Custom hero widget
-                  // -----------------------------------------------
                   flightShuttleBuilder: (_, animation, __, ___, ____) {
                     return AnimatedBuilder(
                       animation: animation,
@@ -88,7 +77,7 @@ class RoomCard extends StatelessWidget {
                       ),
                       VerticalRoomTitle(room: room),
                       const CameraIconButton(),
-                      const AnimatedUpwardArrows()
+                      const AnimatedUpwardArrows(),
                     ],
                   ),
                 ),
@@ -163,8 +152,6 @@ class VerticalRoomTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final dx = 50 * animationValue;
-    // final opacity = 1 - animationValue;
     return Align(
       alignment: Alignment.centerLeft,
       child: RotatedBox(

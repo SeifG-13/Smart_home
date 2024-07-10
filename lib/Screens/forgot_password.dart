@@ -1,3 +1,6 @@
+
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smart_home/Utilities/routes.dart';
@@ -10,6 +13,8 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  TextEditingController email = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -49,13 +54,45 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       labelText: 'Email',
                       border: OutlineInputBorder(),
                     ),
+                    controller: email,
                   ),
                   const SizedBox(
                     height: 10,
                     width: 10,
                   ),
                   TextButton.icon(
-                    onPressed: (() {}),
+                    onPressed: (()async {
+                      if ( email.text == ""){
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          animType: AnimType.rightSlide,
+                          title: 'Error',
+                          desc: 'No email written.',
+                        ).show();
+                        return;
+                      }
+                      try {
+                          await FirebaseAuth.instance.sendPasswordResetEmail(email: email.text);
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.success,
+                            animType: AnimType.rightSlide,
+                            title: 'alright',
+                            desc: 'check ur email.',
+                          ).show();
+                      }
+                      catch(e){
+                          print(e);
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.error,
+                            animType: AnimType.rightSlide,
+                            title: 'error',
+                            desc: 'this email doesn\'t exist.',
+                          ).show();
+                      }
+                    }),
                     icon: const Icon(
                       Icons.read_more,
                       size: 28,

@@ -1,14 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_home/core/app/app.dart';
+import 'package:smart_home/main.dart';
 
-import '../../../../Utilities/routes.dart';
 import '../../../../settings/settings.dart';
 
-class ShDrawer extends StatelessWidget {
-  const ShDrawer({Key? key}) : super(key: key);
+class ShDrawer extends StatefulWidget {
+  @override
+  _ShDrawerState createState() => _ShDrawerState();
+}
 
+class _ShDrawerState extends State<ShDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -138,18 +142,21 @@ class ShDrawer extends StatelessWidget {
               InkWell(
                 onTap: () async {
                   try {
+                    GoogleSignIn googleSignIn = GoogleSignIn();
+                    googleSignIn.disconnect();
                     await FirebaseAuth.instance.signOut();
-                    print(
-                        "Signed out successfully, navigating to login screen");
-                    print("MyRoutes.loginScreen: ${MyRoutes.loginScreen}");
-                    Navigator.pushNamedAndRemoveUntil(
+
+                    Navigator.pushAndRemoveUntil(
                       context,
-                      MyRoutes.loginScreen,
+                      MaterialPageRoute(
+                        builder: (context) => MyApp(),
+                      ),
                       (route) => false,
                     );
                   } catch (e) {
                     print("Error: $e");
                   }
+                  setState(() {});
                 },
                 child: Row(
                   children: <Widget>[

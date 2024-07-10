@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 24),
               const Text("smart home",style:TextStyle(
                     color: Colors.black,
-                    fontSize: 24,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,),
               ),
               height24,
