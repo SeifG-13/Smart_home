@@ -100,7 +100,7 @@ class RoomDetailItems extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    room.name.replaceAll(' ', '\n'),
+                    room.name.replaceAll(' ', '\n').toUpperCase(),
                     textAlign: TextAlign.center,
                     style: context.displaySmall.copyWith(height: .9),
                   ),

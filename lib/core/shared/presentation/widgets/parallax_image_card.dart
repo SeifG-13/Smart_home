@@ -22,7 +22,9 @@ class ParallaxImageCard extends StatelessWidget {
           ),
         ],
         image: DecorationImage(
-          image: AssetImage(imageUrl),
+          image: imageUrl.startsWith('https')
+              ? NetworkImage(imageUrl)
+              : AssetImage(imageUrl) as ImageProvider<Object>,
           fit: BoxFit.cover,
           colorFilter:
               const ColorFilter.mode(Colors.black26, BlendMode.colorBurn),

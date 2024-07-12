@@ -160,7 +160,7 @@ class VerticalRoomTitle extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(left: 40.h, right: 20.h, top: 12.w),
             child: Text(
-              room.name.replaceAll(' ', ''),
+              room.name.replaceAll(' ', '').toUpperCase(),
               maxLines: 1,
               style: context.displayLarge.copyWith(color: SHColors.textColor),
             ),

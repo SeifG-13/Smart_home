@@ -21,7 +21,7 @@ class LightIntensitySliderCard extends StatelessWidget {
             const Icon(SHIcons.lightMin),
             Expanded(
               child: Slider(
-                value: .2,
+                value: 0.6,
                 onChanged: (value) {},
               ),
             ),

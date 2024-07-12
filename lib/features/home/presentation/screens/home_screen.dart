@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return LightedBackgound(
       child: Scaffold(
         key: _scaffoldKey,
-        appBar:  ShAppBar(onOpenDrawer: () {
+        appBar: ShAppBar(onOpenDrawer: () {
           _scaffoldKey.currentState!.openDrawer();
         }),
         drawer: ShDrawer(),
@@ -50,10 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               const SizedBox(height: 24),
-              const Text("smart home",style:TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,),
+              const Text(
+                "smart home",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               height24,
               Expanded(

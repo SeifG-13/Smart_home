@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_home/add/add.dart';
 
 import '../../../../core/app/app.dart';
 import '../../../../core/core.dart';
@@ -44,6 +45,13 @@ class SmHomeBottomNavigationBar extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Padding(
                 padding: EdgeInsets.all(8),
+                child: Icon(Icons.add),
+              ),
+              label: 'ADD ROOM',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.all(8),
                 child: Icon(SHIcons.settings),
               ),
               label: 'SETTINGS',
@@ -55,6 +63,13 @@ class SmHomeBottomNavigationBar extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => SmartHomeApp(),
+                ),
+              );
+            }else if (index == 1) { // assuming the home icon is at index 0
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddRoom(),
                 ),
               );
             }else{ // assuming the home icon is at index 0

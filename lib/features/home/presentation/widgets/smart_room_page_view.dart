@@ -1,10 +1,15 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../add/update.dart';
 import '../../../../core/shared/domain/entities/music_info.dart';
 import '../../../../core/shared/domain/entities/smart_device.dart';
 import '../../../../core/shared/domain/entities/smart_room.dart';
 import '../../../../core/shared/presentation/widgets/room_card.dart';
+import '../../../../main.dart';
 import '../../../smart_room/screens/room_details_screen.dart';
 
 class SmartRoomsPageView extends StatefulWidget {
@@ -25,7 +30,7 @@ class SmartRoomsPageView extends StatefulWidget {
 
 class _SmartRoomsPageViewState extends State<SmartRoomsPageView> {
   List<SmartRoom> rooms = [];
-
+  bool isLoading = true ;
   @override
   void initState() {
     super.initState();
@@ -33,7 +38,7 @@ class _SmartRoomsPageViewState extends State<SmartRoomsPageView> {
   }
 
   Future<void> fetchData() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("rooms").get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("rooms").where("id", isEqualTo:FirebaseAuth.instance.currentUser!.uid).get();
     List<SmartRoom> fetchedRooms = querySnapshot.docs.map((doc) {
       return SmartRoom(
         id: doc.id,
@@ -43,22 +48,23 @@ class _SmartRoomsPageViewState extends State<SmartRoomsPageView> {
 
         temperature: doc["temperature"].toDouble(),
         airHumidity: doc["airHumidity"].toDouble(),
-        //lights: SmartDevice(isOn: doc["lights"]["isOn"], value: doc["lights"]["value"]),
-        //timer: SmartDevice(isOn: doc["timer"]["isOn"], value: doc["timer"]["value"]),
-        //airCondition: SmartDevice(isOn: doc["airCondition"]["isOn"], value: doc["airCondition"]["value"]),
+        lights: SmartDevice(isOn: doc["lights isOn"], value: doc["lights value"]),
+        timer: SmartDevice(isOn: doc["timer isOn"], value: doc["timer value"]),
+        airCondition: SmartDevice(isOn: doc["airCondition isOn"], value: doc["airCondition value"]),
         //musicInfo: MusicInfo(
           //isOn: doc["musicInfo"]["isOn"],
           //currentSong: Song.defaultSong, // Adjust this based on your Song class
         //),
-        lights: SmartDevice(isOn: true, value: 40),
-        timer: SmartDevice(isOn: false, value: 20),
-        airCondition: SmartDevice(isOn: true, value: 10),
+        //lights: SmartDevice(isOn: true, value: 40),
+        //timer: SmartDevice(isOn: false, value: 20),
+        //airCondition: SmartDevice(isOn: true, value: 10),
         musicInfo: MusicInfo(
           isOn: false,
           currentSong: Song.defaultSong,
         ),
       );
     }).toList();
+    isLoading = false;
 
     setState(() {
       rooms = fetchedRooms;
@@ -75,7 +81,7 @@ class _SmartRoomsPageViewState extends State<SmartRoomsPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<double>(
+    return isLoading == true ? Center(child: CircularProgressIndicator()) : ValueListenableBuilder<double>(
       valueListenable: widget.pageNotifier,
       builder: (_, page, __) => ValueListenableBuilder(
         valueListenable: widget.roomSelectorNotifier,
@@ -92,28 +98,63 @@ class _SmartRoomsPageViewState extends State<SmartRoomsPageView> {
               curve: Curves.fastOutSlowIn,
               transform: _getOutTranslate(percent, selected as int, index),
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: RoomCard(
-                percent: percent,
-                expand: isSelected,
-                room: room,
-                onSwipeUp: () => widget.roomSelectorNotifier.value = index,
-                onSwipeDown: () => widget.roomSelectorNotifier.value = -1,
-                onTap: () async {
-                  if (isSelected) {
-                    await Navigator.push(
-                      context,
-                      PageRouteBuilder<void>(
-                        transitionDuration: const Duration(milliseconds: 800),
-                        reverseTransitionDuration: const Duration(milliseconds: 800),
-                        pageBuilder: (_, animation, __) => FadeTransition(
-                          opacity: animation,
-                          child: RoomDetailScreen(room: room),
+              child: InkWell(
+                onLongPress: (){
+                  AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.warning,
+                    animType: AnimType.rightSlide,
+                    title: 'warning',
+                    desc: 'do u wanna delete or change room details',
+                    btnCancelText: "delete",
+                    btnOkText: "update",
+                    btnCancelOnPress: ()async{
+                      await FirebaseFirestore.instance.collection("rooms").doc(rooms[index].id).delete();
+                      if(rooms[index].imageUrl.startsWith('https'))
+                          { FirebaseStorage.instance.refFromURL(rooms[index].imageUrl).delete();}
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyApp(),
                         ),
-                      ),
-                    );
-                    widget.roomSelectorNotifier.value = -1;
-                  }
+                            (route) => false,
+                      );
+                    },
+                    btnOkOnPress: ()async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateRoom(docid: rooms[index].id, oldname: rooms[index].name,),
+                        ),
+
+                      );
+
+                    }
+                  ).show();
                 },
+                child: RoomCard(
+                  percent: percent,
+                  expand: isSelected,
+                  room: room,
+                  onSwipeUp: () => widget.roomSelectorNotifier.value = index,
+                  onSwipeDown: () => widget.roomSelectorNotifier.value = -1,
+                  onTap: () async {
+                    if (isSelected) {
+                      await Navigator.push(
+                        context,
+                        PageRouteBuilder<void>(
+                          transitionDuration: const Duration(milliseconds: 800),
+                          reverseTransitionDuration: const Duration(milliseconds: 800),
+                          pageBuilder: (_, animation, __) => FadeTransition(
+                            opacity: animation,
+                            child: RoomDetailScreen(room: room),
+                          ),
+                        ),
+                      );
+                      widget.roomSelectorNotifier.value = -1;
+                    }
+                  },
+                ),
               ),
             );
           },
