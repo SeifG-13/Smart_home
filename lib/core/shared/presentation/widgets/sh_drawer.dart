@@ -6,6 +6,8 @@ import 'package:smart_home/core/app/app.dart';
 import 'package:smart_home/main.dart';
 
 import '../../../../settings/settings.dart';
+import '../../../../notification/notification.dart';
+
 
 class ShDrawer extends StatefulWidget {
   @override
@@ -94,20 +96,29 @@ class _ShDrawerState extends State<ShDrawer> {
                   SizedBox(
                     height: 30,
                   ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.notifications_active_outlined,
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'notifications',
-                        style: TextStyle(color: Colors.white.withOpacity(0.5)),
-                      )
-                    ],
+                  InkWell(
+                  onTap: () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                  builder: (context) => NotificationPage(),
+                  ));
+                  },
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.notifications_active_outlined,
+                          color: Colors.white.withOpacity(0.5),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'notifications',
+                          style: TextStyle(color: Colors.white.withOpacity(0.5)),
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 30,

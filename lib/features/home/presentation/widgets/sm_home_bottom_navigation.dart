@@ -3,6 +3,7 @@ import 'package:smart_home/add/add.dart';
 
 import '../../../../core/app/app.dart';
 import '../../../../core/core.dart';
+import '../../../../dashboard/dashboardtemp.dart';
 import '../../../../settings/settings.dart';
 
 class SmHomeBottomNavigationBar extends StatelessWidget {
@@ -52,6 +53,13 @@ class SmHomeBottomNavigationBar extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Padding(
                 padding: EdgeInsets.all(8),
+                child: Icon(Icons.dashboard),
+              ),
+              label: 'DASHBOARD',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.all(8),
                 child: Icon(SHIcons.settings),
               ),
               label: 'SETTINGS',
@@ -70,6 +78,13 @@ class SmHomeBottomNavigationBar extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddRoom(),
+                ),
+              );
+            }else if (index == 2) { // assuming the home icon is at index 0
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TemperatureChart(),
                 ),
               );
             }else{ // assuming the home icon is at index 0
